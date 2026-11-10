@@ -1,8 +1,8 @@
 # Type Aliases vs Interfaces in TypeScript
 
-TypeScript gives us two main tools to define custom data shapes: type aliases and interfaces. Both describe object models cleanly, but their underlying behavior differs as your codebase grows.
+TypeScript gives us interfaces and type aliases to describe data shapes in our code. We usually treat them as similar tools. But they are differently in key areas.
 
-Interfaces define object shapes. When we declare the same interface name twice in the same module scope, TypeScript merges those individual property definitions together into a single unified object contract without throwing errors. This behavior helps library authors expose extensible definitions that external consumers can augment later.
+Interfaces focus on defining object shapes and contracts. Their most unique feature is declaration conflict. If you declare the same interface twice in the same scope, TypeScript merges their properties automatically so we can extend existing types without touching the source. This merging makes interfaces popular for library authors and global configs.
 
 ```ts
 interface User {
@@ -12,15 +12,14 @@ interface User {
 interface User {
   age: number;
 }
-
 // User now requires both name and age
 ```
 
-Type aliases name any valid type expression. Unlike interfaces, a type alias cannot be declared more than once in the same scope. Writing duplicate type names causes TypeScript to raise a compile error immediately. Type aliases can directly represent unions, tuples, and primitive aliases.
+Type aliases work differently. A type alias creates a name for any valid type expression. Unlike an interface, you cannot declare the same type alias twice. TypeScript throws an error if you duplicate a type name. Type aliases can represent unions, tuples, and primitive values directly. Interfaces cannot model raw unions or tuples on their own.
 
 ```ts
 type Status = "idle" | "loading" | "success";
 type Point = [number, number];
 ```
 
-Use interfaces when modeling standard objects, data contracts, and class architectures in object-oriented modules. Use type aliases when you combine types using unions, intersections, or tuple structures. Sticking to this separation keeps your project organized and prevents duplicate type confusion.
+Choosing between them comes down to your data structure. I prefer interfaces when designing object structures, API payloads, and class contracts. Interfaces offer clean error messages and straightforward extension with `extends`. On the other hand, I pick type aliases whenever I need union types, mapped types, or tuple definitions. Knowing this distinction keeps your types predictable and clean.

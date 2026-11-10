@@ -1,4 +1,4 @@
-const multiplyValue = (value : number, multiplier?: number): number => {
+const multiplyValue = (value: number, multiplier?: number): number => {
   if (multiplier !== undefined) {
     return value * multiplier;
   } else {
@@ -6,7 +6,7 @@ const multiplyValue = (value : number, multiplier?: number): number => {
   }
 }
 
-const processInput  = (input: string | number | boolean): string | number => {
+const processInput = (input: string | number | boolean): string | number => {
   if (typeof input === 'string') {
     return input.trim().toLowerCase();
   }
@@ -37,8 +37,8 @@ const getPopularCourses = (courses: Course[], minStudents: number): Course[] => 
   );
 }
 
-const pluckValues = <T, K extends keyof T> (items: T[], key: K): T[K][] => {
-  return items.map((item) => item[key])
+const pluckValues = <T, K extends keyof T>(items: T[], key: K): T[K][] => {
+  return items.map((item) => item[key]);
 }
 
 class Employee {

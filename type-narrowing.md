@@ -1,8 +1,8 @@
 # Understanding Type Narrowing in TypeScript
 
-TypeScript variables usually hold union types with multiple possible shapes. Type narrowing is the process where TypeScript refines a broad type into a more specific type within conditional code branches. This lets us call methods safely without runtime failures.
+Working with union types in TypeScript is common in everyday applications. A variable can hold a string, a number, or a complex object. When our API responds with data that could be in any shapes, TypeScript stops us from calling methods until we prove which type is active at runtime. Type narrowing solves this. It is the process where TypeScript refines a broad type into a specific type inside conditional branches.
 
-Types narrow quickly. The `typeof` operator checks primitive values like strings, numbers, and booleans. When you test a variable with `typeof`, TypeScript removes the other union members inside that block.
+The simplest check uses the `typeof` operator. This guard checks primitive values such as strings, numbers, and booleans. Once tested, TypeScript removes the other union members inside that `if` block.
 
 ```ts
 function printId(id: string | number) {
@@ -14,7 +14,7 @@ function printId(id: string | number) {
 }
 ```
 
-The `instanceof` guard inspects class instances and prototypes at runtime. This check works well for standard library objects like Date or Error instances.
+For object instances, we rely on the `instanceof` guard. This operator inspects prototypes at runtime. It works reliably for built-in objects like `Date` or `Error`, as well as custom classes.
 
 ```ts
 function parseDate(value: Date | string) {
@@ -25,7 +25,7 @@ function parseDate(value: Date | string) {
 }
 ```
 
-The `in` operator confirms whether a specific property exists on an object before you read that property. When working with disparate object shapes that lack a shared discriminator field, testing for a distinct key helps the compiler distinguish between valid candidate interfaces without casting.
+Sometimes we handle plain objects that share no common class or tag. In those cases, the `in` operator checks whether a specific property exists on the object. If the property exists, TypeScript narrows the value to the matching shape.
 
 ```ts
 type Bird = { fly: () => void };
@@ -39,5 +39,3 @@ function move(animal: Bird | Fish) {
   }
 }
 ```
-
-Type narrowing bridges dynamic JavaScript runtime checks with static TypeScript type analysis. Using `typeof`, `instanceof`, and the `in` operator eliminates type errors and keeps our runtime code reliable.
